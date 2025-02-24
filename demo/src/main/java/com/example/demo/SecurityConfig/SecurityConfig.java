@@ -2,6 +2,7 @@ package com.example.demo.SecurityConfig;
 
 import com.example.demo.Filter.JwtFilter;
 import com.example.demo.Service.AuthService;
+import com.example.demo.Service.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,11 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final AuthService authService;
+    private final UserDetailServiceImpl userDetailService;;
     private final JwtFilter jwtFilter;
 
-    public SecurityConfig(AuthService authService, JwtFilter jwtFilter) {
-        this.authService = authService;
+    public SecurityConfig(UserDetailServiceImpl userDetailService, JwtFilter jwtFilter) {
+        this.userDetailService = userDetailService;
         this.jwtFilter = jwtFilter;
     }
 
@@ -47,7 +48,7 @@ public class SecurityConfig {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder
-                .userDetailsService(authService)
+                .userDetailsService(userDetailService)
                 .passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder.build();
     }

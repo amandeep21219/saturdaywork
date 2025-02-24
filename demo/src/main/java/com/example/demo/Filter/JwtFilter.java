@@ -1,4 +1,6 @@
 package com.example.demo.Filter;
+import com.example.demo.Service.AuthService;
+import com.example.demo.Service.UserDetailServiceImpl;
 import com.example.demo.Utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,8 +20,9 @@ import java.io.IOException;
 @Component
 
 public class JwtFilter extends OncePerRequestFilter {
+
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailServiceImpl userDetailService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -34,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
             username = jwtUtil.extractUsername(jwt);
         }
         if (username != null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails =userDetailService.loadUserByUsername(username);
             if (jwtUtil.validateToken(jwt)) {
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

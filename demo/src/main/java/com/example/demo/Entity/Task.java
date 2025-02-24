@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "task")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;//task id
 
     @Column(nullable = false)

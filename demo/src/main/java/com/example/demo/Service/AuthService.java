@@ -1,55 +1,52 @@
 package com.example.demo.Service;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.Entity.User;
+import com.example.demo.Mapper.UserMapper;
 import com.example.demo.Repository.UserRepository;
-import com.example.demo.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Objects;
 
 @Service
-public class AuthService implements UserDetailsService {
+public class AuthService  {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     public void registerUser(UserDTO userDTO) {
-        User user = new User();
-        user.setEmail(userDTO.getEmail());
+        User user = userMapper.toEntity(userDTO);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRole(Role.valueOf(userDTO.getRole()));
-
-
         userRepository.save(user);
 
-    }
 
-    public void logSuccessfulLoginAttempt(String username) {
 
     }
+//    CustomerDao customerDao = Mapper.toDao(customerDto);
+////         passwordEncoder.encode(customerDto.getPassword());
+//        customerDao.setPassword(passwordEncoder.encode(customerDto.getPassword()));
+//            customerRepository.save(customerDao);
+//    // log.info("Customer Created");Created
+//            return Mapper.toDto(customerDao);
 
-    public void logFailedLoginAttempt(String username) {
 
-    }
 
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email).get(0);
 
-        if (Objects.nonNull(user)) {
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getEmail())
-                    .password(user.getPassword())
-                    .roles(user.getRole().name())
-                    .build();
-        }
-        throw new UsernameNotFoundException("User not found with username: " + email);
-    }
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//
+//        User user = userRepository.findByEmail(email).get(0);
+//
+//        if (Objects.nonNull(user)) {
+//            return org.springframework.security.core.userdetails.User.builder()
+//                    .username(user.getEmail())
+//                    .password(user.getPassword())
+//                    .roles(user.getRole().name())
+//                    .build();
+//        }
+//        throw new UsernameNotFoundException("User not found with username: " + email);
+//    }
 }

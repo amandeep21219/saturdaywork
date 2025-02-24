@@ -11,7 +11,7 @@ public class UserMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public User toEntity(UserDTO userDTO) {
+    public  User toEntity(UserDTO userDTO) {
         return modelMapper.map(userDTO, User.class);
     }
 

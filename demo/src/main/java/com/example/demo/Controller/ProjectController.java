@@ -30,7 +30,7 @@ public class ProjectController {
         return projectService.createProject(projectDTO);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ProjectDTO updateProject(@PathVariable UUID id, @RequestBody ProjectDTO projectDTO) {
         return projectService.updateProject(id, projectDTO);
     }

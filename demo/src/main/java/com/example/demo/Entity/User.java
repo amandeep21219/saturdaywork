@@ -6,23 +6,30 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(unique = true,nullable = false)
     private String email;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
+
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role")
     private Role role;
+
+
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_project",

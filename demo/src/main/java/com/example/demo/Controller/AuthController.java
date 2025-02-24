@@ -2,6 +2,7 @@ package com.example.demo.Controller;
 import com.example.demo.DTO.LoginRequest;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.Service.AuthService;
+import com.example.demo.Service.UserDetailServiceImpl;
 import com.example.demo.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserDetailServiceImpl userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -26,7 +29,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
         authService.registerUser(userDTO);
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok("Registered Successfully");
     }
 
     @PostMapping("/login")
@@ -35,15 +38,18 @@ public class AuthController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
+            // Generate JWT token
+            String jwtToken = JwtUtil.
+                    generateToken(userDetails.getUsername());
+
+            return ResponseEntity.ok(jwtToken);
         } catch (Exception e) {
-            authService.logFailedLoginAttempt(loginRequest.getEmail());
-            return ResponseEntity.badRequest().body("Invalid username or password");
+           return null;
         }
 
-        final UserDetails userDetails = authService.loadUserByUsername(loginRequest.getEmail());
-        final String jwt = JwtUtil.generateToken(String.valueOf(userDetails));
 
-        authService.logSuccessfulLoginAttempt(loginRequest.getEmail());
-        return ResponseEntity.ok(jwt);
     }
 }
+
+

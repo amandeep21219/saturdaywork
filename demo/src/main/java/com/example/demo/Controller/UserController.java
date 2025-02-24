@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable UUID id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable UUID id) {//ok
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -31,13 +31,13 @@ public class UserController {
 //        return userService.createUser(userDTO);
 //    }
 
-    @PutMapping("/{id}/role")
-    public UserDTO updateUserRole(@PathVariable UUID id, @RequestParam String role) {
+    @PatchMapping("/{id}/role")
+    public UserDTO updateUserRole(@PathVariable UUID id, @RequestParam String role) {//ok
         return userService.updateUserRole(id, role);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
-    }
+    }//ok
 }

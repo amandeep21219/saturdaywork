@@ -17,27 +17,27 @@ public class TaskController {
 
     @GetMapping
     public List<TaskDTO> getAllTasks() {
-        return taskService.getAllTasks();
+        return taskService.getAllTasks();//ok
     }
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDTO> getTaskById(@PathVariable UUID id) {
+    public ResponseEntity<TaskDTO> getTaskById(@PathVariable UUID id) {//ok
         return taskService.getTaskById(id)
-                .map(ResponseEntity::ok)
+                .map(ResponseEntity::ok)//ok
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public TaskDTO createTask(@RequestBody TaskDTO taskDTO) {
-        return taskService.createTask(taskDTO);
+        return taskService.createTask(taskDTO);//ok
     }
 
-    @PutMapping("/{id}/status")
+    @PatchMapping("/{id}")//ok
     public TaskDTO updateTaskStatus(@PathVariable UUID id, @RequestParam String status) {
         return taskService.updateTaskStatus(id, status);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable UUID id) {
+    public void deleteTask(@PathVariable UUID id) {//ok
         taskService.deleteTask(id);
     }
 }
